@@ -4,7 +4,7 @@ from ..schemas import ActivityCreate
 
 # Create a new activity
 def create_activity(db: Session, activity: ActivityCreate):
-    db_activity = Activity(**activity.__dict__)
+    db_activity = Activity(**activity.model_dump())
     db_activity.duration = activity.duration.total_seconds()
     db.add(db_activity)
     db.commit()

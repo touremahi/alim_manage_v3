@@ -5,7 +5,7 @@ from ..schemas import MealCreate
 
 # Create a new meal
 def create_meal(db: Session, meal: MealCreate):
-    db_meal = Meal(**meal.__dict__)
+    db_meal = Meal(**meal.model_dump())
     db.add(db_meal)
     db.commit()
     db.refresh(db_meal)

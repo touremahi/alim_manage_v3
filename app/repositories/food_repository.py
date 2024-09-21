@@ -4,7 +4,7 @@ from ..schemas import FoodCreate
 
 # Create a new food item
 def create_food(db: Session, food: FoodCreate):
-    db_food = Food(**food.__dict__)
+    db_food = Food(**food.model_dump())
     db.add(db_food)
     db.commit()
     db.refresh(db_food)

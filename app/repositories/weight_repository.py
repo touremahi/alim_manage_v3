@@ -4,7 +4,7 @@ from ..schemas import WeightCreate
 
 # Create a new weight
 def create_weight(db: Session, weight: WeightCreate):
-    db_weight = Weight(**weight.__dict__)
+    db_weight = Weight(**weight.model_dump())
     db.add(db_weight)
     db.commit()
     db.refresh(db_weight)
