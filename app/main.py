@@ -1,18 +1,19 @@
 from fastapi import FastAPI
-# from fastapi.staticfiles import StaticFiles
+from fastapi.staticfiles import StaticFiles
+
 from .db.session import init_db
 from .api.v1 import api_router
+from .routes.v1 import web_router
 
 init_db()
 
 app = FastAPI()
 
-# Servir les fichiers statiques
-# app.mount("/static", StaticFiles(directory="static"), name="static")
+# templates = Jinja2Templates(directory="app/templates")
 
-app.include_router(api_router)
+# Servir les fichiers statiques
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 # Configurer les routes
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
+app.include_router(api_router)
+app.include_router(web_router)

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Enregistrement{% endblock %}
+
+{% block scripts %}
+<script src="/static/register.js"></script>
+{% endblock %}
+
+{% block content %}
+    <h2>Enregistrement</h2>
+    <form method="post" action="/register">
+        <label for="username">Nom d'utilisateur</label>
+        <input type="text" id="username" name="username" required>
+
+        <label for="age">Age</label>
+        <input type="number" id="age" name="age" required>
+
+        <label for="initial_weight">Poids Initial</label>
+        <input type="number" id="initial_weight" name="initial_weight" required>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="password">Mot de passe</label>
+        <input type="password" id="password" name="password" required>
+
+        <label for="confirm_password">Confirmer le mot de passe</label>
+        <input type="password" id="confirm_password" name="confirm_password" required>
+
+        <button type="submit">S'enregistrer</button>
+    </form>
+
+    <p id="passwordError" style="color: red; display: none;">Les mots de passe ne correspondent pas.</p>
+
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+    {% if success %}
+        <p style="color: rgb(5, 129, 67);">{{ success }}</p>
+    {% endif %}
+    <button onclick="window.location.href='/login'">Se connecter</button>
+{% endblock %}
