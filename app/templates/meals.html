@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Ajouter Aliment{% endblock %}
+
+{% block content %}
+    <h2>Contenus des repas</h2>
+    
+    <h3>Liste des repas</h3>
+
+    <h3>Ajouter un aliment au repas</h3>
+    <form method="post" action="/meals_configs/">
+
+        <label for="meal">Repas</label>
+        <select id="meal" name="meal" required>
+            {% for meal in meals %}
+            <option value="{{ meal.id }}">{{ meal.date }} - {{ meal.time }} - {{ meal.type }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="food">Aliment</label>
+        <select id="food" name="food" required>
+            {% for food in foods %}
+            <option value="{{ food.id }}">{{ food.name }}</option>
+            {% endfor %}
+        </select>
+        
+        <label for="quantity">Quantité</label>
+        <input type="number" step="0.01" id="quantity" name="quantity" required>
+
+        <button type="submit">Ajouter</button>
+    </form>
+
+    {% if meal_contents %}
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Heure</th>
+                <th>Repas</th>
+                <th>Aliment</th>
+                <th>Catégorie</th>
+                <th>Quantité</th>
+                <th>Calories</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for food in meal_contents["foods"]  %}
+            <tr>
+                <td>{{ meal_contents["date"] }}</td>
+                <td>{{ meal_contents["time"] }}</td>
+                <td>{{ meal_contents["type"] }}</td>
+                <td>{{ food.name }}</td>
+                <td>{{ food.category }}</td>
+                <td>{{ food.quantity }}</td>
+                <td>{{ food.calories }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+
+    {% if error %}
+    <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+{% endblock %}

@@ -3,6 +3,7 @@ uvicorn[standard]
 sqlalchemy
 pydantic
 pydantic[email]
+pydantic-settings
 pytest
 pytest-asyncio
 python-dotenv
@@ -11,3 +12,4 @@ python-jose[cryptography]
 bcrypt
 passlib
 python-multipart
+jinja2

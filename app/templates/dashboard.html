@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+    <h2>Tableau de bord</h2>
+    
+    <h3>Repas de {{ username.capitalize() }}</h3>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Date</th>
+                <th>Type de repas</th>
+                <th>Heure</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for meal in meals %}
+            <tr>
+                <td>{{ meal.id }}</td>
+                <td>{{ meal.date }}</td>
+                <td>{{ meal.type }}</td>
+                <td>{{ meal.time }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Ajouter un nouveau repas</h3>
+    <form method="post" action="/dashboard/">
+
+        <label for="username">Utilisateur</label>
+        <select id="username" name="username" required>
+            {% for user in users %}
+            <option value="{{ user.id }}">{{ user.username }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="date">Date</label>
+        <input type="date" id="date" name="date" required></input>
+
+        <label for="time">Heure</label>
+        <input type="time" id="time" name="time" required></input>
+
+        <label for="type">Type de repas</label>
+        <input type="text" id="type" name="type" required>
+
+        <button type="submit">Ajouter</button>
+    </form>
+
+    {% if error %}
+    <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+{% endblock %}
