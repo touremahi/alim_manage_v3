@@ -1,16 +1,32 @@
 {% extends "base.html" %}
 
-{% block title %}Dashboard{% endblock %}
+{% block title %}Ajouter Aliment{% endblock %}
 
 {% block content %}
-    <h2>Tableau de bord</h2>
+    <h2>Aliments</h2>
     
     <h3>Liste des aliments</h3>
-    <ul>
-        {% for food in foods %}
-            <li>{{food.id}} : {{ food.name }} - {{ food.calories }} par {{food.unit}} ({{ food.category }})</li>
-        {% endfor %}
-    </ul>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Catégorie</th>
+                <th>Calories</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for food in foods %}
+            <tr>
+                <td>{{ food.id }}</td>
+                <td>{{ food.name }}</td>
+                <td>{{ food.category }}</td>
+                <td>{{ food.calories }} par {{ food.unit }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
     <h3>Ajouter un aliment</h3>
     <form method="post" action="/foods_configs/">

@@ -6,17 +6,37 @@
     <h2>Tableau de bord</h2>
     
     <h3>Repas de {{ username.capitalize() }}</h3>
-    <ul>
-        {% for meal in meals %}
-            <li>{{meal.id}} : {{ meal.type }} - {{ meal.time }} ({{ meal.date }})</li>
-        {% endfor %}
-    </ul>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Date</th>
+                <th>Type de repas</th>
+                <th>Heure</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for meal in meals %}
+            <tr>
+                <td>{{ meal.id }}</td>
+                <td>{{ meal.date }}</td>
+                <td>{{ meal.type }}</td>
+                <td>{{ meal.time }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
     <h3>Ajouter un nouveau repas</h3>
     <form method="post" action="/dashboard/">
 
         <label for="username">Utilisateur</label>
-        <input id="text" name="username" required></input>
+        <select id="username" name="username" required>
+            {% for user in users %}
+            <option value="{{ user.id }}">{{ user.username }}</option>
+            {% endfor %}
+        </select>
 
         <label for="date">Date</label>
         <input type="date" id="date" name="date" required></input>

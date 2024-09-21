@@ -3,13 +3,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Suivi de Repas{% endblock %}</title>
-    {% block scripts %}{% endblock %}
     <link rel="stylesheet" href="/static/styles.css">
+    {% block scripts %}{% endblock %}
 </head>
 <body>
     <header>
         <h1>Suivi de Repas</h1>
     </header>
+    <nav class="navbar">
+        <ul>
+            <li><a href="/" class="{% if request.url.path == '/' %}active{% endif %}">Accueil</a></li>
+            <li><a href="/dashboard/" class="{% if request.url.path == '/dashboard/' %}active{% endif %}">Tableau de bord</a></li>
+            <li><a href="/meals_configs/" class="{% if request.url.path == '/meals_configs/' %}active{% endif %}">Repas</a></li>
+            <li><a href="/foods_configs/" class="{% if request.url.path == '/foods_configs/' %}active{% endif %}">Aliments</a></li>
+            <li><a href="/login/" class="{% if request.url.path == '/login/' %}active{% endif %}">Connexion</a></li>
+        </ul>
+    </nav>
 
     <main>
         {% block content %}{% endblock %}
