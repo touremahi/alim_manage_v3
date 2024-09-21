@@ -31,7 +31,7 @@ def update_weight(db: Session, weight_id: int, weight: WeightCreate):
     db_weight = get_weight_by_id(db, weight_id)
     if db_weight is None:
         return None
-    for key, value in weight.dict().items():
+    for key, value in weight.model_dump().items():
         setattr(db_weight, key, value)
     db.commit()
     db.refresh(db_weight)

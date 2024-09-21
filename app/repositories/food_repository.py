@@ -30,7 +30,7 @@ def get_foods_by_category(db: Session, category: str):
 def update_food(db: Session, food_id: int, food: FoodCreate):
     db_food = db.query(Food).filter(Food.id == food_id).first()
     if db_food:
-        for key, value in food.__dict__.items():
+        for key, value in food.model_dump().items():
             setattr(db_food, key, value)
     db.commit()
     db.refresh(db_food)

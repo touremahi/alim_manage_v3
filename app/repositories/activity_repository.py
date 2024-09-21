@@ -36,7 +36,7 @@ def update_activity(db: Session, activity_id: int, activity: ActivityCreate):
     db_activity = db.query(Activity).filter(Activity.id == activity_id).first()
     if db_activity is None:
         return None
-    for key, value in activity.__dict__.items():
+    for key, value in activity.model_dump().items():
         if key == 'duration':
             setattr(db_activity, key, value.total_seconds())
             continue

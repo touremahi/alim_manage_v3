@@ -41,7 +41,7 @@ def update_meal(db: Session, meal_id: int, meal: MealCreate):
     db_meal = get_meal_by_id(db, meal_id)
     if db_meal is None:
         return None
-    for key, value in meal.__dict__.items():
+    for key, value in meal.model_dump().items():
         setattr(db_meal, key, value)
     db.commit()
     db.refresh(db_meal)
