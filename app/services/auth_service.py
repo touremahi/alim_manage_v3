@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, status, Request
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError
 from sqlalchemy.orm import Session
@@ -13,6 +13,11 @@ from .user_service import (
 from ..core.security import (
     verify_password, create_access_token, verify_token
 )
+
+def is_api_request(request: Request):
+    if request.headers.get("accept") == "application/json":
+        return True
+    return False
 
 credentials_exception = HTTPException(
     status_code=status.HTTP_401_UNAUTHORIZED,
@@ -58,4 +63,28 @@ async def get_current_active_user(current_user: UserInDB = Depends(get_current_u
     if not current_user:
         raise HTTPException(status_code=400, detail="Inactive user")
     
+    return current_user
+
+async def get_current_web_user(request: Request, db: Session = Depends(get_db)):
+    token = request.cookies.get("access_token")
+    if not token:
+        return None
+    try:
+        payload = verify_token(token)
+        username: str = payload.get("sub")
+        if username is None:
+            raise credentials_exception
+        token_data = TokenData(username=username)
+    except JWTError:
+        raise credentials_exception
+
+    user = get_user(db, username=token_data.username)
+    if not user:
+        raise credentials_exception
+    return user
+
+async def get_current_web_active_user(current_user: UserInDB = Depends(get_current_web_user)):
+    if not current_user:
+        raise HTTPException(status_code=401, detail="Inactive user")
+
     return current_user
