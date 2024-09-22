@@ -29,8 +29,10 @@ async def meals_config(
     to_template = {
         "request": request,
     }
+    meals = get_meals_by_user_service(db, current_user.id)
+    to_template["meal_contents"] = get_meal_content_service(db, meals[0].id)
     to_template["username"] = current_user.username
-    to_template["meals"] = get_meals_by_user_service(db, current_user.id)
+    to_template["meals"] = meals
     to_template["foods"] = get_foods_service(db)
     to_template["users"] = get_users_service(db)
     return templates.TemplateResponse("meals.html", to_template)
