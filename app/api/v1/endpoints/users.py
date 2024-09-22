@@ -3,6 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from ....db.session import get_db
 from ....schemas.user import UserCreate, UserOut, UserUpdate, UserInDB
+from app.services.auth_service import get_current_active_user
 from ....services.user_service import (
     create_user_service, update_user_info, delete_user_service,
     get_user_by_id_service, get_user_by_email_service, get_users_service
@@ -17,7 +18,7 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
 
 # Get list of users
 @router.get("/", response_model=List[UserOut])
-def get_users(db: Session = Depends(get_db)):
+async def get_users(db: Session = Depends(get_db), current_user=Depends(get_current_active_user)):
     try:
         users = get_users_service(db)
         return users
@@ -25,7 +26,7 @@ def get_users(db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail=str(e))
 
 @router.get("/{user_id}", response_model=UserOut)
-def get_user(user_id: int, db: Session = Depends(get_db)):
+async def get_user(user_id: int, db: Session = Depends(get_db)):
     try:
         user = get_user_by_id_service(db, user_id)
         return user
@@ -46,10 +47,12 @@ def get_user_by_email(email: str, db: Session = Depends(get_db)):
 def update_user(
     user_id: int,
     user: UserUpdate,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_active_user)
 ):
-    
     try:
+        if current_user.id != user_id:
+            raise HTTPException(status_code=403, detail="Not authorized to update this user")
         updated_user = update_user_info(db, user_id, user)
         return updated_user
     except ValueError as e:
@@ -57,8 +60,14 @@ def update_user(
 
 # Delete user by id
 @router.delete("/{user_id}")
-def delete_user(user_id: int, db: Session = Depends(get_db)):
+def delete_user(
+    user_id: int,
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_active_user)
+):
     try:
+        if current_user.id != user_id:
+            raise HTTPException(status_code=403, detail="Not authorized to delete this user")
         deleted_user = delete_user_service(db, user_id)
         return deleted_user
     except ValueError as e:

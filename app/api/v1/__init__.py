@@ -7,7 +7,7 @@ from .endpoints import (
 api_router = APIRouter()
 
 # Inclure les différentes routes
-api_router.include_router(auth.router, prefix="/auth", tags=["authentification"])
+# api_router.include_router(auth.router, prefix="/auth", tags=["authentification"])
 api_router.include_router(users.router, prefix="/users", tags=["users"])
 api_router.include_router(foods.router, prefix="/foods", tags=["foods"])
 api_router.include_router(meals.router, prefix="/meals", tags=["meals"])

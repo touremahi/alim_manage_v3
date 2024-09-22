@@ -2,7 +2,8 @@ from sqlalchemy.orm import Session
 from ..schemas import UserCreate, UserUpdate, UserOut, UserInDB
 from ..repositories.user_repository import (
     create_user, update_user, delete_user,
-    get_user_by_email, get_user_by_id, get_users
+    get_user_by_email, get_user_by_id, get_users,
+    get_user_by_username
 )
 
 # Create a new user
@@ -32,6 +33,12 @@ def get_users_service(db: Session):
         raise ValueError("No users found")
     users = [UserOut(**user.__dict__) for user in users_db]
     return users
+
+def get_user_by_username_service(db: Session, username: str):
+    user_db = get_user_by_username(db, username)
+    if not user_db:
+        raise ValueError("User not found")
+    return UserInDB(**user_db.__dict__)
 
 # get user in db
 def get_user_in_db_service(db: Session, email: str):

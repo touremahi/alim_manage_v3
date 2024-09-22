@@ -8,11 +8,13 @@ from sqlalchemy.orm import sessionmaker, Session
 from app.main import app
 from app.db.base import Base
 from app.db.session import get_db
+from app.services.auth_service import get_current_active_user
 from app.core.config import settings
 from app.models import (
     User, Food, Meal,
     MealFood, Weight, Activity
 )
+from app.schemas import UserInDB
 
 # créer une base de données en mémoire pour les tests
 SQLALCHEMY_DATABASE_URL = settings.DATABASE_URL_TEST
@@ -39,7 +41,17 @@ def client(db_session: Session):
         finally:
             db_session.close()
     
+    def override_get_current_active_user():
+        return UserInDB(
+            username="test",
+            email="email@domain.com",
+            age=30,
+            hashed_password="password",
+            initial_weight=77
+        )
+
     app.dependency_overrides[get_db] = override_get_db
+    app.dependency_overrides[get_current_active_user] = override_get_current_active_user
     with TestClient(app) as client:
         yield client
     app.dependency_overrides.clear()

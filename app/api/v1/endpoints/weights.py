@@ -9,8 +9,11 @@ from ....services.weight_service import (
     get_weight_by_id_service, update_weight_service, 
     delete_weight_service
 )
+from app.services.auth_service import get_current_active_user
 
-router = APIRouter()
+router = APIRouter(
+    dependencies=[Depends(get_current_active_user)]
+)
 
 @router.post("/", response_model=WeightOut)
 def create_weight(weight: WeightCreate, db: Session = Depends(get_db)):

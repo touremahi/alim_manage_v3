@@ -11,12 +11,18 @@ from ....services.meal_service import (
     get_meals_by_user_and_date_service, update_meal_service,
     delete_meal_service
 )
+from app.services.auth_service import get_current_active_user
 
-router = APIRouter()
+router = APIRouter(
+    dependencies=[Depends(get_current_active_user)]
+)
 
 @router.post("/", response_model=MealOut)
 def create_meal(meal: MealCreate, db: Session = Depends(get_db)):
-    return create_meal_service(db, meal)
+    try:
+        return create_meal_service(db, meal)
+    except ValueError as e:
+        raise HTTPException(status_code=401, detail=str(e))
 
 @router.get("/", response_model=List[MealOut])
 def get_meals(db: Session = Depends(get_db)):
