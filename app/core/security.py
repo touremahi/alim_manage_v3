@@ -19,11 +19,8 @@ def create_access_token(data: dict, expires_delta: timedelta = None):
 
 # Vérifier un token JWT
 def verify_token(token: str):
-    try:
-        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
-        return payload
-    except JWTError:
-        return None
+    payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+    return payload
 
 # Verifier un mot de passe
 def verify_password(plain_password, hashed_password):

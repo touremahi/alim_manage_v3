@@ -57,5 +57,7 @@ async def register_user(
         return templates.TemplateResponse("register.html", {"request": request, "success": "Votre compte a été créé avec succès."})
     except ValidationError as e:
         return templates.TemplateResponse("register.html", {"request": request, "error": str(e)})
+    except ValueError as e:
+        return templates.TemplateResponse("register.html", {"request": request, "error": str(e)})
     
 

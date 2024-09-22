@@ -9,8 +9,11 @@ from ....services.food_service import (
     get_foods_by_category_service, 
     update_food_service, delete_food_service
 )
+from app.services.auth_service import get_current_active_user
 
-router = APIRouter()
+router = APIRouter(
+    dependencies=[Depends(get_current_active_user)]
+)
 
 @router.post("/", response_model=FoodOut)
 def create_food(food: FoodCreate, db: Session = Depends(get_db)):

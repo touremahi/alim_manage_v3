@@ -9,8 +9,11 @@ from ....services.meal_food_service import (
     update_meal_food_service,
     delete_meal_food_service
 )
+from app.services.auth_service import get_current_active_user
 
-router = APIRouter()
+router = APIRouter(
+    dependencies=[Depends(get_current_active_user)]
+)
 
 @router.post("/", response_model=MealFoodOut)
 def add_food_to_meal(meal_food: MealFoodUpdate, db: Session = Depends(get_db)):

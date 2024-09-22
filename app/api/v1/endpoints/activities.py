@@ -9,8 +9,11 @@ from ....services.activity_service import (
     get_activities_by_user_service,
     update_activity_service, delete_activity_service
 )
+from app.services.auth_service import get_current_active_user
 
-router = APIRouter()
+router = APIRouter(
+    dependencies=[Depends(get_current_active_user)]
+)
 
 @router.post("/", response_model=ActivityOut)
 def create_activity(activity: ActivityCreate, db: Session = Depends(get_db)):

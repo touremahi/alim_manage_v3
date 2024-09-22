@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 from app.schemas.meal import MealCreate
 from starlette.responses import RedirectResponse
 from app.db.session import get_db
+from app.services.auth_service import get_current_web_active_user
 from app.services.user_service import (
     get_user_by_id_service, get_users_service
 )
@@ -14,20 +15,22 @@ from app.services.meal_service import (
     get_meals_by_user_service, create_meal_service
 )
 
-router = APIRouter()
+router = APIRouter(
+    dependencies=[Depends(get_current_web_active_user)]
+)
 
 templates = Jinja2Templates(directory="app/templates")
 
 @router.get("/", response_class=HTMLResponse)
-async def dashboard(request: Request, db: Session = Depends(get_db)):
+async def dashboard(
+    request: Request, db: Session = Depends(get_db),
+    current_user: dict = Depends(get_current_web_active_user)
+):
     to_template = {
         "request": request,
     }
-    user_id = request.cookies.get("user_id")
-    if not user_id:
-        return templates.TemplateResponse("login.html", {"request": request})
-    to_template["username"] = get_user_by_id_service(db, int(user_id)).username
-    to_template["meals"] = get_meals_by_user_service(db, user_id)
+    to_template["username"] = get_user_by_id_service(db, current_user.id).username
+    to_template["meals"] = get_meals_by_user_service(db, current_user.id)
     to_template["users"] = get_users_service(db)
     return templates.TemplateResponse("dashboard.html", to_template)
 
