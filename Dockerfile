@@ -4,9 +4,12 @@ FROM python:3.9-slim
 # Étape 2 : Définir une variable d'environnement pour désigner l'environnement de production
 ENV ENVIRONMENT=production
 
-ENV DATABASE_URL_PROD=sqlite:////app/db_data/data.db
-ENV DATABASE_URL_TEST_DB=sqlite:////app/db_data/test_db.db
-ENV DATABASE_URL_TEST_API=sqlite:////app/db_data/test_api.db
+ENV DATABASE_URL=sqlite:////app/db_data/data.db
+ENV DATABASE_URL_TEST=sqlite:////app/db_data/test_db.db
+
+ENV SECRET_KEY=votre_secret_key
+ENV ALGORITHM=HS256
+ENV ACCESS_TOKEN_EXPIRE_MINUTES=30
 
 # Étape 3 : Définir un chemin par défaut pour stocker la base de données (modifiable via un argument)
 ARG DB_PATH=/app/db
@@ -28,7 +31,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Étape 9 : Exposer le port sur lequel l'application va tourner
-EXPOSE 8345
+EXPOSE 8000
 
 # Étape 10 : Commande pour démarrer l'application avec uvicorn
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8345"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

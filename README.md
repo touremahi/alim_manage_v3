@@ -54,11 +54,12 @@ alim_gestion_v3/
 │   ├── routes/
 │   │   └── v1/
 │   │       ├── __init__.py
-│   │       └── endpoints/
-│   │           ├── __init__.py
-│   │           ├── auth.py
-│   │           ├── meals.py
-│   │           └── ...
+│   │       ├── endpoints/
+│   │       │   ├── __init__.py
+│   │       │   ├── meals.py
+│   │       │   └── ...
+│   │       ├── auth.py
+│   │       └── middleware.py
 │   ├── templates/
 │   |    ├── base.html
 │   |    ├── index.html
@@ -133,6 +134,15 @@ Pour installer le projet en local, suivez les étapes ci-dessous :
    ```
    sh run_me.sh # sur un terminal bash
    ```
+## Déploiement en utilisant Docker
+1. Création de l'image Docker :
+   ```
+   docker build -t alim_gestion_v3 .
+   ```
+2. Lancer le conteneur Docker :
+   ```
+   docker run -d -p 8000:8000 --name alim_gestion alim_gestion_v3:latest
+   ```
 
 ## Contribution et Gestion des Pull Requests
 
@@ -160,7 +170,7 @@ Pour installer le projet en local, suivez les étapes ci-dessous :
 
 6. **Résolution des Conflits** : Si des conflits surviennent lors de la fusion, ils doivent être résolus avant la validation de la PR.
 
-7. **Merge** : Une fois la PR approuvée et les conflits résolus, elle peut être fusionnée dans `develop`. Ne fusionnez pas directement dans `main` sans passer par `develop`.
+7. **Merge** : Une fois la PR approuvée et les conflits résolus, elle peut être fusionnée dans `develop`. Ne fusionnez pas directement dans `master` sans passer par `develop`.
 
 ## Documentation
 La documentation complète sur l'architecture du projet, les fonctionnalités, et les instructions pour les développeurs sera mise à jour au fur et à mesure que le projet avance.
