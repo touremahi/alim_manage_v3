@@ -3,7 +3,7 @@ from fastapi.staticfiles import StaticFiles
 
 from .db.session import init_db
 from .api.v1 import api_router
-from .routes.v1 import web_router
+from .routes.v2 import web_router
 
 init_db()
 

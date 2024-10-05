@@ -39,3 +39,7 @@ class UserOut(UserBase):
 
 class UserInDB(UserOut):
     hashed_password: str
+
+class LoginData(BaseModel):
+    email: EmailStr
+    password: str

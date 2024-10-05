@@ -1,5 +1,5 @@
 # schemas/__init__.py
-from .user import UserCreate, UserOut, UserInDB, UserUpdate
+from .user import UserCreate, UserOut, UserInDB, UserUpdate, LoginData
 from .activity import ActivityCreate, ActivityOut
 from .weight import WeightCreate, WeightOut
 from .food import FoodCreate, FoodOut

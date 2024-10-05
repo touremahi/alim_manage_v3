@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.js"></script>
+    <script src="/static/js/dashboard.js"></script>
+    <style>
+        .highlighted {
+          background-color: rgb(194, 214, 80) !important;/* Change cette couleur selon tes préférences */
+        }
+    </style>
+    <h2>Tableau de bord</h2>
+    <div ng-app="dashboardApp">
+        <h3>Repas de {{"{{users[0].username}}"}}</h3>
+        <div ng-controller="dashboardController">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Date</th>
+                        <th>Type de repas</th>
+                        <th>Heure</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="meal in meals"
+                        ng-click="selectMeal(meal)"
+                        ng-class="{'highlighted': selectMeal && meal.id == selectedMeal}">
+                        <td>{{"{{meal.id}}"}}</td>
+                        <td>{{"{{meal.date}}"}}</td>
+                        <td>{{"{{meal.type}}"}}</td>
+                        <td>{{"{{meal.time}}"}}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Ajouter un nouveau repas</h3>
+            <form ng-submit="addMeal()" method="post">
+
+                <label for="username">Utilisateur</label>
+                <select ng-click="getMeals()" id="username" ng-model="mealData.user_id" required>
+                    <option ng-repeat="user in users" value="{{"{{user.id}}"}}">{{"{{user.username}}"}}</option>
+                </select>
+
+                <label for="date">Date</label>
+                <input type="date" id="date" ng-model="mealData.date" required></input>
+
+                <label for="time">Heure</label>
+                <input type="time" id="time" ng-model="mealData.time" required></input>
+
+                <label for="type">Type de repas</label>
+                <input type="text" id="type" ng-model="mealData.type" required></input>
+
+                <button type="submit">Ajouter</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block content %}
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.js"></script>
+    <script src="/static/js/login.js"></script>
+    <h2>Connexion</h2>
+    <div ng-app="loginApp">
+        <div ng-controller="loginController">
+            <form ng-submit="submitLogin()" method="post">
+                <label for="email">Email</label>
+                <input type="email" id="email" ng-model="loginData.email" required>
+
+                <label for="password">Mot de passe</label>
+                <input type="password" id="password" ng-model="loginData.password" required>
+
+                <button type="submit">Se connecter</button>
+            </form>
+            <p ng-if="loginError" style="color: red;">Erreur de connexion : {{ "{{ errorMessage }}" }}</p>
+            <button onclick="window.location.href='/register'">S'inscrire</button>
+        </div>
+    </div>
+{% endblock %}
